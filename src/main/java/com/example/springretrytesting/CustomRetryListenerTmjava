@@ -1,0 +1,24 @@
+
+package com.example.springretrytesting;
+import org.springframework.retry.RetryCallback;
+import org.springframework.retry.RetryContext;
+import org.springframework.retry.listener.RetryListenerSupport;
+
+import java.util.Map;
+
+public class CustomRetryListenerT extends RetryListenerSupport {
+
+    private Map<String, String> headers;
+
+    public CustomRetryListener(Map<String, String> headers) {
+        this.headers = headers;
+    }
+
+    @Override
+    public <T, E extends Throwable> void onError(RetryContext context, RetryCallback<T, E> callback, Throwable throwable) {
+        if (headers != null && !headers.isEmpty()) {
+            // You can modify the headers here before the next retry attempt
+            System.out.println("Modifying headers before retry: " + headers);
+        }
+    }
+}
